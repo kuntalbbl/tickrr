@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Loading Stocks...</title> <style>
+    <title>Loading ...</title> <style>
         body {
             font-family: -apple-system, sans-serif;
             background-color: #ffffff;
@@ -15,7 +15,7 @@
         .dashboard { display: flex; gap: 50px; }
         .stock-item { text-align: center; }
         .symbol { color: #888; font-size: 12px; display: block; margin-bottom: 4px; }
-        .price { font-size: 28px; font-weight: 600; color: #1a1a1a; }
+        .price { font-size: 12px; font-weight: 200; color: #1a1a1a; }
     </style>
 </head>
 <body>
@@ -54,7 +54,7 @@
 
                         // Update the Browser Tab Title for your chosen stock
                         if (s === tabFocus) {
-                            document.title = `${s}: ${formattedPrice}`;
+                            document.title = `{s}: ${formattedPrice}`;
                         }
                     }
                 } catch (e) {
