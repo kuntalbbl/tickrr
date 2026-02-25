@@ -3,164 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Stock Prices</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <title>Stock Prices</title>
   <style>
-    :root {
-      --bg: #080c10;
-      --panel: #0d1117;
-      --border: rgba(56, 189, 248, 0.15);
-      --accent: #38bdf8;
-      --muted: rgba(148, 163, 184, 0.5);
-      --text: #e2e8f0;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      background: var(--bg);
-      min-height: 100vh;
+      margin: 0;
+      background: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-family: 'Share Tech Mono', monospace;
-      color: var(--text);
-      padding: 2rem 1rem;
+      min-height: 100vh;
+      font-family: monospace;
+      gap: 2rem;
+    }
+
+    .row {
+      display: flex;
+      align-items: baseline;
       gap: 1.5rem;
     }
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
+    .symbol {
+      font-size: 2rem;
+      color: #aaa;
+      letter-spacing: 0.1em;
     }
 
-    header {
-      text-align: center;
+    .price {
+      font-size: 2rem;
+      color: #fff;
+      letter-spacing: 0.05em;
+      min-width: 7ch;
+      text-align: right;
     }
 
-    header h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.1rem;
-      letter-spacing: 0.4em;
-      color: var(--accent);
-      opacity: 0.7;
-    }
-
-    header p {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      color: var(--muted);
-      margin-top: 0.3rem;
-    }
-
-    .widget-wrapper {
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Label above each widget */
-    .ticker-label {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.3em;
-      color: var(--accent);
-      opacity: 0.5;
-      padding-left: 0.3rem;
-      margin-bottom: 0.2rem;
-    }
-
-    .ticker-row {
-      margin-bottom: 1rem;
-    }
-
-    /* TradingView single ticker widget container */
-    .tv-widget {
-      border: 1px solid var(--border);
-      border-left: 3px solid rgba(56,189,248,0.4);
-      overflow: hidden;
-      background: var(--panel);
+    .price.loading {
+      color: #444;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>LIVE MARKET PRICES</h1>
-    <p>POWERED BY TRADINGVIEW · REAL-TIME DATA</p>
-  </header>
-
-  <div class="widget-wrapper">
-
-    <!-- AAPL -->
-    <div class="ticker-row">
-      <div class="ticker-label">AAPL · APPLE INC.</div>
-      <div class="tv-widget">
-        <div class="tradingview-widget-container">
-          <div class="tradingview-widget-container__widget"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-          {
-            "symbol": "NASDAQ:AAPL",
-            "width": "100%",
-            "colorTheme": "dark",
-            "isTransparent": true,
-            "locale": "en"
-          }
-          </script>
-        </div>
-      </div>
-    </div>
-
-    <!-- SPY -->
-    <div class="ticker-row">
-      <div class="ticker-label">SPY · S&amp;P 500 ETF</div>
-      <div class="tv-widget">
-        <div class="tradingview-widget-container">
-          <div class="tradingview-widget-container__widget"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-          {
-            "symbol": "AMEX:SPY",
-            "width": "100%",
-            "colorTheme": "dark",
-            "isTransparent": true,
-            "locale": "en"
-          }
-          </script>
-        </div>
-      </div>
-    </div>
-
-    <!-- NVDA -->
-    <div class="ticker-row">
-      <div class="ticker-label">NVDA · NVIDIA CORPORATION</div>
-      <div class="tv-widget">
-        <div class="tradingview-widget-container">
-          <div class="tradingview-widget-container__widget"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-          {
-            "symbol": "NASDAQ:NVDA",
-            "width": "100%",
-            "colorTheme": "dark",
-            "isTransparent": true,
-            "locale": "en"
-          }
-          </script>
-        </div>
-      </div>
-    </div>
-
+  <div class="row">
+    <span class="symbol">AAPL</span>
+    <span class="price loading" id="price-AAPL">...</span>
   </div>
+
+  <div class="row">
+    <span class="symbol">SPY</span>
+    <span class="price loading" id="price-SPY">...</span>
+  </div>
+
+  <div class="row">
+    <span class="symbol">NVDA</span>
+    <span class="price loading" id="price-NVDA">...</span>
+  </div>
+
+  <script>
+    const tickers = ['AAPL', 'SPY', 'NVDA'];
+
+    async function fetchPrice(symbol) {
+      // Uses allorigins CORS proxy to reach Yahoo Finance
+      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`;
+      const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+      const res = await fetch(proxy);
+      const data = await res.json();
+      const meta = JSON.parse(data.contents).chart.result[0].meta;
+      return meta.regularMarketPrice;
+    }
+
+    async function loadAll() {
+      for (const symbol of tickers) {
+        try {
+          const price = await fetchPrice(symbol);
+          const el = document.getElementById(`price-${symbol}`);
+          el.textContent = `$${price.toFixed(2)}`;
+          el.classList.remove('loading');
+        } catch(e) {
+          document.getElementById(`price-${symbol}`).textContent = 'N/A';
+        }
+      }
+    }
+
+    loadAll();
+    setInterval(loadAll, 60000);
+  </script>
 
 </body>
 </html>
