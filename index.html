@@ -1,53 +1,166 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Stock Tracker</title>
-    <style>
-        body { font-family: sans-serif; background: #131722; color: white; text-align: center; }
-        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Stock Prices</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080c10;
+      --panel: #0d1117;
+      --border: rgba(56, 189, 248, 0.15);
+      --accent: #38bdf8;
+      --muted: rgba(148, 163, 184, 0.5);
+      --text: #e2e8f0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--text);
+      padding: 2rem 1rem;
+      gap: 1.5rem;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    header {
+      text-align: center;
+    }
+
+    header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.4em;
+      color: var(--accent);
+      opacity: 0.7;
+    }
+
+    header p {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    .widget-wrapper {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Label above each widget */
+    .ticker-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      opacity: 0.5;
+      padding-left: 0.3rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .ticker-row {
+      margin-bottom: 1rem;
+    }
+
+    /* TradingView single ticker widget container */
+    .tv-widget {
+      border: 1px solid var(--border);
+      border-left: 3px solid rgba(56,189,248,0.4);
+      overflow: hidden;
+      background: var(--panel);
+    }
+  </style>
 </head>
 <body>
-    <h1>Market Watch</h1>
-    <div class="container">
-        <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-            {
-              "symbol": "NASDAQ:AAPL",
-              "width": "350",
-              "colorTheme": "dark",
-              "isTransparent": false,
-              "locale": "en"
-            }
-            </script>
-        </div>
-        
-        <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-            {
-              "symbol": "NASDAQ:NVDA",
-              "width": "350",
-              "colorTheme": "dark",
-              "isTransparent": false,
-              "locale": "en"
-            }
-            </script>
-        </div>
 
+  <header>
+    <h1>LIVE MARKET PRICES</h1>
+    <p>POWERED BY TRADINGVIEW · REAL-TIME DATA</p>
+  </header>
+
+  <div class="widget-wrapper">
+
+    <!-- AAPL -->
+    <div class="ticker-row">
+      <div class="ticker-label">AAPL · APPLE INC.</div>
+      <div class="tv-widget">
         <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-            {
-              "symbol": "AMEX:SPY",
-              "width": "350",
-              "colorTheme": "dark",
-              "isTransparent": false,
-              "locale": "en"
-            }
-            </script>
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "NASDAQ:AAPL",
+            "width": "100%",
+            "colorTheme": "dark",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
         </div>
+      </div>
     </div>
+
+    <!-- SPY -->
+    <div class="ticker-row">
+      <div class="ticker-label">SPY · S&amp;P 500 ETF</div>
+      <div class="tv-widget">
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "AMEX:SPY",
+            "width": "100%",
+            "colorTheme": "dark",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+    </div>
+
+    <!-- NVDA -->
+    <div class="ticker-row">
+      <div class="ticker-label">NVDA · NVIDIA CORPORATION</div>
+      <div class="tv-widget">
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+          {
+            "symbol": "NASDAQ:NVDA",
+            "width": "100%",
+            "colorTheme": "dark",
+            "isTransparent": true,
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </body>
 </html>
