@@ -23,15 +23,15 @@
 
     <div class="dashboard">
         <div class="stock-item">
-            <span class="symbol">AAPL</span>
+            <span class="symbol"> </span>
             <div id="AAPL" class="price">...</div>
         </div>
         <div class="stock-item">
-            <span class="symbol">NVDA</span>
+            <span class="symbol"> </span>
             <div id="NVDA" class="price">...</div>
         </div>
         <div class="stock-item">
-            <span class="symbol">BTC</span>
+            <span class="symbol"> </span>
             <div id="BTC" class="price">...</div>
         </div>
     </div>
@@ -47,7 +47,7 @@
         };
 
         const symbols = Object.keys(symbolMap);
-        const tabSymbols = ['BTC', 'NVDA']; // Which ones to show in the title bar
+        const tabSymbols = ['BTC']; // Which ones to show in the title bar
 
         async function updatePrices() {
             let titleParts = [];
@@ -62,7 +62,7 @@
                         const priceOnly = data.c.toFixed(2);
                         
                        
-                        document.getElementById(displayLabel).innerText = priceOnly;
+                        //document.getElementById(displayLabel).innerText = priceOnly;
 
                         // Add to Title Bar if selected
                         if (tabSymbols.includes(displayLabel)) {
